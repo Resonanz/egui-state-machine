@@ -8,15 +8,19 @@ pub mod model;
 fn main() -> eframe::Result {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size([800.0, 600.0]),
+        viewport: egui::ViewportBuilder::default()
+            .with_min_inner_size([600., 400.])
+            .with_max_inner_size([600., 400.])
+            .with_resizable(false),
         ..Default::default()
     };
 
     eframe::run_native(
-        "My egui App",
+        "egui State Machine",
         options,
         Box::new(|cc| {
-            // This gives us image support:
+            // This gives us image support (note that
+            // egui_extras in cargo.toml needs all_loaders)
             egui_extras::install_image_loaders(&cc.egui_ctx);
             Ok(Box::new(MyApp::new(cc)))
         }),
