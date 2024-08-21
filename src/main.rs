@@ -3,7 +3,7 @@
 use eframe::egui::{self, FontFamily, FontId, Vec2};
 
 mod fonts;
-pub mod model;
+pub mod state_machine;
 
 fn main() -> eframe::Result {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
@@ -29,13 +29,15 @@ fn main() -> eframe::Result {
 
 // A place to store our data
 pub struct MyApp {
-    model: model::StateMachine,
+    sm: state_machine::StateMachine,
+    transition: state_machine::Transition,
 }
 
 impl Default for MyApp {
     fn default() -> Self {
         Self {
-            model: Default::default(),
+            sm: Default::default(),
+            transition: Default::default(),
         }
     }
 }
@@ -46,17 +48,21 @@ impl MyApp {
         // Load custom fonts
         fonts::setup_custom_fonts(&cc.egui_ctx);
         Self {
-            model: Default::default(),
+            sm: Default::default(),
+            transition: Default::default(),
         }
     }
 }
 
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // Default = no transition
+        self.transition = state_machine::Transition::NoTransition;
+
         // Display depending upon super_state
-        match self.model.super_state {
+        match self.sm.get_state() {
             // First state
-            model::SuperState::A => {
+            state_machine::State::A => {
                 egui::CentralPanel::default().show(ctx, |ui| {
                     ui.label(
                         egui::RichText::new("State A")
@@ -70,13 +76,13 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state A").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::AtoA;
+                        self.transition = state_machine::Transition::AtoA;
                     }
                     if ui
                         .add(egui::Button::new("Go to state B").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::AtoB;
+                        self.transition = state_machine::Transition::AtoB;
                     }
                 });
 
@@ -100,7 +106,7 @@ impl eframe::App for MyApp {
                 });
             }
             // Second state
-            model::SuperState::B => {
+            state_machine::State::B => {
                 egui::CentralPanel::default().show(ctx, |ui| {
                     ui.label(
                         egui::RichText::new("State B")
@@ -114,29 +120,29 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state B").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::BtoB;
+                        self.transition = state_machine::Transition::BtoB;
                     }
                     if ui
                         .add(egui::Button::new("Go to state C").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::BtoC;
+                        self.transition = state_machine::Transition::BtoC;
                     }
                     if ui
                         .add(egui::Button::new("Go to state D").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::BtoD;
+                        self.transition = state_machine::Transition::BtoD;
                     }
                     if ui
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::BtoE;
+                        self.transition = state_machine::Transition::BtoE;
                     }
                 });
             }
-            model::SuperState::C => {
+            state_machine::State::C => {
                 egui::CentralPanel::default().show(ctx, |ui| {
                     ui.label(
                         egui::RichText::new("State C")
@@ -150,17 +156,17 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state C").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::CtoC;
+                        self.transition = state_machine::Transition::CtoC;
                     }
                     if ui
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::CtoE;
+                        self.transition = state_machine::Transition::CtoE;
                     }
                 });
             }
-            model::SuperState::D => {
+            state_machine::State::D => {
                 egui::CentralPanel::default().show(ctx, |ui| {
                     ui.label(
                         egui::RichText::new("State D")
@@ -174,17 +180,17 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state D").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::DtoD;
+                        self.transition = state_machine::Transition::DtoD;
                     }
                     if ui
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::DtoE;
+                        self.transition = state_machine::Transition::DtoE;
                     }
                 });
             }
-            model::SuperState::E => {
+            state_machine::State::E => {
                 egui::CentralPanel::default().show(ctx, |ui| {
                     ui.label(
                         egui::RichText::new("State E")
@@ -198,17 +204,17 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::EtoE;
+                        self.transition = state_machine::Transition::EtoE;
                     }
                     if ui
                         .add(egui::Button::new("Go to state A").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.model.transition = model::Transition::EtoA;
+                        self.transition = state_machine::Transition::EtoA;
                     }
                 });
             }
         }
-        self.model.update_state_machine();
+        self.sm.update_state_machine(&self.transition);
     }
 }

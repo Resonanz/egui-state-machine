@@ -1,5 +1,5 @@
 #[derive(Debug, Default)]
-pub enum SuperState {
+pub enum State {
     #[default]
     A,
     B,
@@ -11,6 +11,7 @@ pub enum SuperState {
 #[derive(Debug, Default)]
 pub enum Transition {
     #[default]
+    NoTransition,
     AtoA,
     AtoB,
     BtoB,
@@ -26,74 +27,80 @@ pub enum Transition {
 }
 
 #[derive(Debug)]
-pub struct StateMachine {
-    pub super_state: SuperState,
-    pub transition: Transition,
+pub struct StateMachine { // This PUB struct (and its impl) is available outside this module.
+    state: State, // This struct field is private.
 }
 
 impl Default for StateMachine {
     fn default() -> Self {
         Self {
-            super_state: Default::default(),
-            transition: Default::default(),
+            state: Default::default(),
         }
     }
 }
 
 impl StateMachine {
-    pub fn update_state_machine(&mut self) {
-        match self.transition {
+    pub fn get_state(&self) -> &State {
+        &self.state
+    }
+
+    pub fn update_state_machine(&mut self, trans: &Transition) {
+        match trans {
+            Transition::NoTransition => {
+                self.process_no_transition();
+            }
             Transition::AtoA => {
-                self.super_state = SuperState::A;
+                self.state = State::A;
                 self.process_a_to_a();
             }
             Transition::AtoB => {
-                self.super_state = SuperState::B;
+                self.state = State::B;
                 self.process_a_to_b();
             }
             Transition::BtoB => {
-                self.super_state = SuperState::B;
+                self.state = State::B;
                 self.process_b_to_b();
             }
             Transition::BtoC => {
-                self.super_state = SuperState::C;
+                self.state = State::C;
                 self.process_b_to_c();
             }
             Transition::BtoD => {
-                self.super_state = SuperState::D;
+                self.state = State::D;
                 self.process_b_to_d();
             }
             Transition::BtoE => {
-                self.super_state = SuperState::E;
+                self.state = State::E;
                 self.process_b_to_e();
             }
             Transition::CtoC => {
-                self.super_state = SuperState::C;
+                self.state = State::C;
                 self.process_c_to_c();
             }
             Transition::CtoE => {
-                self.super_state = SuperState::E;
+                self.state = State::E;
                 self.process_c_to_e();
             }
             Transition::DtoD => {
-                self.super_state = SuperState::D;
+                self.state = State::D;
                 self.process_d_to_d();
             }
             Transition::DtoE => {
-                self.super_state = SuperState::E;
+                self.state = State::E;
                 self.process_d_to_e();
             }
             Transition::EtoE => {
-                self.super_state = SuperState::E;
+                self.state = State::E;
                 self.process_e_to_e();
             }
             Transition::EtoA => {
-                self.super_state = SuperState::A;
+                self.state = State::A;
                 self.process_e_to_a();
             }
         }
     }
 
+    fn process_no_transition(&self) {}
     fn process_a_to_a(&self) {}
     fn process_a_to_b(&self) {}
     fn process_b_to_b(&self) {}
