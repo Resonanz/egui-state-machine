@@ -2,8 +2,8 @@
 
 A rudimentary state machine demo using enums for States and Transitions.
 
-* ```main.rs``` sets up egui text and buttons and displays the various screens depending upon the State the state machine is in. Pressing a button selects a transition (e.g. model.transition such as AtoB) which is acted upon in ```model.rs```.  
-* ```model.rs``` defines the enum states and transitions, and matches upon model.transition to update the State according to the transitions.
+* ```main.rs``` sets up egui text and buttons and displays the various screens depending upon the State the state machine is in. Pressing a button selects a transition (e.g. state_machine.transition such as AtoB) which is acted upon in ```state_machine.rs```.  
+* ```state_machine.rs``` defines the enum states and transitions, and matches upon state_machine.transition to update the State according to the transitions.
 * ```fonts.rs``` loads fonts and set the aliases that are used inside RichText etc. to select the font.
 
 As shown in the image below, the current state is "STATE A" and the available transitions are AtoA and AtoB.
