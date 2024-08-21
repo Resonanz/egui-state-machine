@@ -62,8 +62,16 @@ impl StateMachine {
     }
 
     pub fn update_state_machine(&mut self, transition: &Transition) {
+        
+        // Match on transition, not state
         match transition {
+            // Most times there will be no transition
             Transition::NoTransition => {}
+            // First we match on the transition, then
+            // check the current state where we are
+            // transitioning away from. This allows a 
+            // transition e.g. AtoB to take place
+            // only if we are beginning in State::A.
             Transition::AtoA => match self.curr_state {
                 State::A => {
                     self.prev_state = self.curr_state.clone();
