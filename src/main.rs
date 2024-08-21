@@ -1,5 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
+use std::default;
+
 use eframe::egui::{self, FontFamily, FontId, Vec2};
 
 mod fonts;
@@ -28,29 +30,27 @@ fn main() -> eframe::Result {
 }
 
 // A place to store our data
+#[derive(Debug, Default)]
 pub struct MyApp {
     sm: state_machine::StateMachine,
     transition: state_machine::Transition,
 }
 
-impl Default for MyApp {
-    fn default() -> Self {
-        Self {
-            sm: Default::default(),
-            transition: Default::default(),
-        }
-    }
-}
+// impl Default for MyApp {
+//     fn default() -> Self {
+//         Self {
+//             sm: Default::default(),
+//             transition: Default::default(),
+//         }
+//     }
+// }
 
 impl MyApp {
     // Called once before the first frame.
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // Load custom fonts
         fonts::setup_custom_fonts(&cc.egui_ctx);
-        Self {
-            sm: Default::default(),
-            transition: Default::default(),
-        }
+        Default::default()
     }
 }
 

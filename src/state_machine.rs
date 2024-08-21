@@ -1,4 +1,4 @@
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default)]
 pub enum State {
     #[default]
     A,
@@ -29,12 +29,14 @@ pub enum Transition {
 #[derive(Debug)]
 pub struct StateMachine { // This PUB struct (and its impl) is available outside this module.
     state: State, // This struct field is private.
+    prev_state: State,
 }
 
 impl Default for StateMachine {
     fn default() -> Self {
         Self {
             state: Default::default(),
+            prev_state: Default::default(),
         }
     }
 }
@@ -45,6 +47,11 @@ impl StateMachine {
     }
 
     pub fn update_state_machine(&mut self, trans: &Transition) {
+
+        // Save previous state
+        self.prev_state = self.state.clone();  // What to use prev_state for?
+
+        // Match on new state
         match trans {
             Transition::NoTransition => {
                 self.process_no_transition();
