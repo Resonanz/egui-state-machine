@@ -1,11 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-use std::default;
-
 use eframe::egui::{self, FontFamily, FontId, Vec2};
 
 mod fonts;
 pub mod state_machine;
+use state_machine::Transition;
 
 fn main() -> eframe::Result {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
@@ -30,20 +29,19 @@ fn main() -> eframe::Result {
 }
 
 // A place to store our data
-#[derive(Debug, Default)]
 pub struct MyApp {
     sm: state_machine::StateMachine,
     transition: state_machine::Transition,
 }
 
-// impl Default for MyApp {
-//     fn default() -> Self {
-//         Self {
-//             sm: Default::default(),
-//             transition: Default::default(),
-//         }
-//     }
-// }
+impl Default for MyApp {
+    fn default() -> Self {
+        Self {
+            sm: Default::default(),
+            transition: Default::default(),
+        }
+    }
+}
 
 impl MyApp {
     // Called once before the first frame.
@@ -56,11 +54,10 @@ impl MyApp {
 
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        // Default = no transition
-        self.transition = state_machine::Transition::NoTransition;
-
-        // Display depending upon super_state
-        match self.sm.get_state() {
+        // Reset to default each time
+        self.transition = Transition::NoTransition;
+        // Display depending upon state
+        match self.sm.get_curr_state() {
             // First state
             state_machine::State::A => {
                 egui::CentralPanel::default().show(ctx, |ui| {
@@ -76,13 +73,13 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state A").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::AtoA;
+                        self.transition = Transition::AtoA;
                     }
                     if ui
                         .add(egui::Button::new("Go to state B").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::AtoB;
+                        self.transition = Transition::AtoB;
                     }
                 });
 
@@ -95,14 +92,6 @@ impl eframe::App for MyApp {
                                 family: FontFamily::Name("seven_seg".into()),
                             }),
                     );
-                    // ui.label(
-                    //     egui::RichText::new("State A")
-                    //         .color(egui::Color32::YELLOW)
-                    //         .font(FontId {
-                    //             size: 12.0,
-                    //             family: FontFamily::Name("bungee".into()),
-                    //         }),
-                    // );
                 });
             }
             // Second state
@@ -120,25 +109,25 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state B").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::BtoB;
+                        self.transition = Transition::BtoB;
                     }
                     if ui
                         .add(egui::Button::new("Go to state C").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::BtoC;
+                        self.transition = Transition::BtoC;
                     }
                     if ui
                         .add(egui::Button::new("Go to state D").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::BtoD;
+                        self.transition = Transition::BtoD;
                     }
                     if ui
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::BtoE;
+                        self.transition = Transition::BtoE;
                     }
                 });
             }
@@ -156,13 +145,13 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state C").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::CtoC;
+                        self.transition = Transition::CtoC;
                     }
                     if ui
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::CtoE;
+                        self.transition = Transition::CtoE;
                     }
                 });
             }
@@ -180,13 +169,13 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state D").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::DtoD;
+                        self.transition = Transition::DtoD;
                     }
                     if ui
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::DtoE;
+                        self.transition = Transition::DtoE;
                     }
                 });
             }
@@ -204,13 +193,13 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::EtoE;
+                        self.transition = Transition::EtoE;
                     }
                     if ui
                         .add(egui::Button::new("Go to state A").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = state_machine::Transition::EtoA;
+                        self.transition = Transition::EtoA;
                     }
                 });
             }
