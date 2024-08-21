@@ -9,3 +9,5 @@ A rudimentary state machine demo using enums for States and Transitions.
 As shown in the image below, the current state is "STATE A" and the available transitions are AtoA and AtoB.
 
 ![image](https://github.com/user-attachments/assets/55e88948-6783-4006-a6ab-d66be8fb9ebd)
+
+<img width="529" alt="image" src="https://github.com/user-attachments/assets/e2231439-a1d6-40bf-8543-b96e03ca6bca">
