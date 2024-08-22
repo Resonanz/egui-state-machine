@@ -62,14 +62,13 @@ impl StateMachine {
     }
 
     pub fn update_state_machine(&mut self, transition: &Transition) {
-        
         // Match on transition, not state
         match transition {
             // Most times there will be no transition
             Transition::NoTransition => {}
             // First we match on the transition, then
             // check the current state where we are
-            // transitioning away from. This allows a 
+            // transitioning away from. This allows a
             // transition e.g. AtoB to take place
             // only if we are beginning in State::A.
             Transition::AtoA => match self.curr_state {
@@ -173,44 +172,83 @@ impl StateMachine {
 
     // P A N I C !!!
     fn do_panic(&self, trans: &Transition) {
-        panic!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state)
+        panic!(
+            "trans = {:?}, but our starting state = {:?}",
+            trans, self.curr_state
+        )
     }
 
     // Process stuff
     fn process_a_to_a(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_a_to_b(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_b_to_b(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_b_to_c(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_b_to_d(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_b_to_e(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_c_to_c(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_c_to_e(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_d_to_d(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_d_to_e(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_e_to_e(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
     fn process_e_to_a(&self, trans: &Transition) {
-        println!("trans = {:?}, self.curr_state={:?}", trans, self.curr_state);
+        println!(
+            "trans = {:?}, self.prev_state = {:?}, self.curr_state = {:?}",
+            trans, self.prev_state, self.curr_state
+        );
     }
 }

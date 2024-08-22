@@ -169,7 +169,7 @@ impl eframe::App for MyApp {
                         .add(egui::Button::new("Go to state D").min_size(Vec2::new(120., 32.)))
                         .clicked()
                     {
-                        self.transition = Transition::DtoD;
+                        self.transition = Transition::BtoD;
                     }
                     if ui
                         .add(egui::Button::new("Go to state E").min_size(Vec2::new(120., 32.)))
